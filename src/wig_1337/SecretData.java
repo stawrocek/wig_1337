@@ -28,83 +28,32 @@ public class SecretData {
 		catch (IOException e){
 			System.out.println("Lol, IOException in SecretData.java");
 		}
+		
+		sqlLogin = DATA.get("sqlLogin");
+		sqlPassword = DATA.get("sqlPassword");
+		sqlUrl = DATA.get("sqlUrl");
 	}
 
-	private void addData(String str, int line)
-	/* Reads line from input, text after ## is discarded
-	 * format:
-	 *
-	 * ## example comment
-	 * ExampleKey=ExampleValue
-	 * ExampleKey2=$$Value55%	##example comment
-	 * Key3 = "Elastische \"Schlussel\" Kappa"
-	 *
-	 */
-	{
-		try {
-			boolean isKeyBuild = false;
-			int q_counter = 0; // " counter
-			boolean isLineComment = false;
-			boolean isLineCorrupt = true;
-			StringBuilder _Key = new StringBuilder();
-			StringBuilder _Value = new StringBuilder();
-			String Key = new String();
-			String Value = new String();
-			for (int i = 0; i < str.length(); i++) {
-				if (str.charAt(i) == '#' && str.charAt(i+1) == '#' && q_counter != 1) {
-					if(isKeyBuild == false) {
-						isLineComment = true;
-					}
-					break;
+	private void addData(String str, int lineCtr){
+		//System.out.println(str);
+		String strKey="";
+		String strValue="";
+		boolean foundEqual=false;
+		for(int i = 0; i < str.length(); i++){
+			if(str.charAt(i) == '='){
+				foundEqual=true;
+			}
+			else{
+				if(foundEqual){
+					strValue += str.charAt(i);
 				}
-				else if (isKeyBuild = false) {
-					if(str.charAt(i) == '=') {
-						isKeyBuild = true;
-						isLineCorrupt = false;
-					}
-					else {
-						_Key.append(str.charAt(i));
-					}
-				}
-				else {
-					isLineCorrupt = false;
-					if(str.charAt(i) == '\"' && str.charAt(i-1) != '\\')
-					{
-						_Value.append(str.charAt(i));
-						q_counter++;
-						if(q_counter == 2)
-							break;
-					}
-					else
-						_Value.append(str.charAt(i));
+				else{
+					strKey += str.charAt(i);
 				}
 			}
-			if (isLineCorrupt == false && isLineComment == false) {
-				Key = _Key.toString();
-				Value = _Value.toString();
-				Key.replaceAll("\\s+", "");
-
-				String ValueCpy = Value;
-				q_counter = 0;
-				for(int i = 0; i < ValueCpy.length(); i++)
-				{
-					if(ValueCpy.charAt(i) == '\"')
-					{
-						q_counter++;
-						Value.replaceFirst("\"", "");
-					}
-					else if(q_counter == 0)
-					{
-						Value.replaceFirst("\\s", "");
-					}
-				}
-				DATA.put(Key, Value);
-			}
 		}
-		catch(Exception E)
-		{
-			E.printStackTrace();
-		}
+		//System.out.println(strKey+"@"+strValue);
+		DATA.put(strKey, strValue);
 	}
 
 	public String getDatabaseLogin(){
