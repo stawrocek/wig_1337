@@ -1,10 +1,13 @@
 package wig_1337;
 
+import agents.*;
+
 public class Main {
-	public static SecretData secretData;
-	
-	public static void main(String[] args){		
-		secretData = new SecretData();
-		System.out.println("---wig_1337---");
+	public static void main(String args[]){
+		SecretData sec = new SecretData();
+		SQLOperator.setup(sec.getDatabaseLogin(), sec.getDatabasePassword(), sec.getDatabaseUrl());
+
+
+		System.out.println("---Wig_1337---");
 	}
 }
