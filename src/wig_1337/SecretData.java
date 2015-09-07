@@ -14,6 +14,8 @@ public class SecretData {
 	private Map<String,String> DATA;
 
 	public SecretData(){
+		
+		DATA = new HashMap<String, String>();
 		int lineCtr=0;
 		try  {
 			BufferedReader br = new BufferedReader(new FileReader("assets/hiddenData.wig1337"));
