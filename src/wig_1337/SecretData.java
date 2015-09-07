@@ -8,13 +8,11 @@ import java.util.*;
 
 
 public class SecretData {
-	private String sqlLogin;
-	private String sqlPassword;
-	private String sqlUrl;
 	private Map<String,String> DATA;
 
 	public SecretData(){
 		int lineCtr=0;
+		DATA = new HashMap<String,String>();
 		try  {
 			BufferedReader br = new BufferedReader(new FileReader("assets/hiddenData.wig1337"));
 			String line;
@@ -55,7 +53,7 @@ public class SecretData {
 					}
 					break;
 				}
-				else if (isKeyBuild = false) {
+				else if (isKeyBuild == false) {
 					if(str.charAt(i) == '=') {
 						isKeyBuild = true;
 						isLineCorrupt = false;
@@ -89,13 +87,15 @@ public class SecretData {
 					if(ValueCpy.charAt(i) == '\"')
 					{
 						q_counter++;
-						Value.replaceFirst("\"", "");
+						Value = Value.replaceFirst("\"", "");
 					}
 					else if(q_counter == 0)
 					{
-						Value.replaceFirst("\\s", "");
+						Value = Value.replaceFirst("\\s", "");
 					}
 				}
+				System.out.println("KEY:" + Key);
+				System.out.println("Value:" + Value);
 				DATA.put(Key, Value);
 			}
 		}
@@ -106,14 +106,17 @@ public class SecretData {
 	}
 
 	public String getDatabaseLogin(){
-		return sqlLogin;
+		System.out.println(DATA.get("sqlLogin"));
+		return DATA.get("sqlLogin");
 	}
 
 	public String getDatabasePassword(){
-		return sqlPassword;
+		System.out.println(DATA.get("sqlPassword\0"));
+		return DATA.get("sqlPassword\0");
 	}
 
 	public String getDatabaseUrl(){
-		return sqlUrl;
+		System.out.println(DATA.get("sqlURL\0"));
+		return DATA.get("sqlURL\0");
 	}
 }
