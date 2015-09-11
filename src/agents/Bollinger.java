@@ -133,7 +133,6 @@ public class Bollinger extends Agent{ // AGENT 3
 					stmt.close();
 					conn.close();
 					ostDecyzja = decyzja;
-					numerOdczytu++;
 				}
 			}
 		}

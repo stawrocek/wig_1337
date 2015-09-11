@@ -26,12 +26,11 @@ public class Pivot_point2 extends Agent{
 	public int ostDecyzja;
 	public Pivot_point2(){
 		System.out.println("Hello World " + NAME +" (ID " + ID + "): OK");
-		numerOdczytu = 1;
+		numerOdczytu = 0;
 		}
 	public int go()
 	{
 		try{
-			numerOdczytu++;
 			Webpage w = new Webpage();
 			System.out.println("p: co 60s odczyt "+"tick="+numerOdczytu);
 			Document doc = Jsoup.parse(w.getData("http://www.bankier.pl/inwestowanie/profile/quote.html?symbol=JSW"));

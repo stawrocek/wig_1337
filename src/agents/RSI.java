@@ -30,6 +30,7 @@ public class RSI extends Agent
 	public String actKurs;
 	public String staryKurs;
 	public String akcja="LOTOS";
+	public int numerOdczytu;
 	double tmp;
 	Webpage web;
 

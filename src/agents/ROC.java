@@ -48,7 +48,6 @@ public class ROC extends Agent{
 			for(Element src : kurs) {
 				if (src.attr("class").equals("profilLast"))
 				{
-					numerOdczytu++;
 					actKurs=src.text();
 
 					Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -111,7 +110,7 @@ public class ROC extends Agent{
 					rs.moveToInsertRow();
 					rs.updateLong("Id_agenta", ID);
 					rs.updateTimestamp("Data", data);
-					rs.updateLong("Numer_Odczytu",numerOdczytu+7000);
+					rs.updateLong("Numer_Odczytu",numerOdczytu);
 					rs.updateDouble("Notowanie", tmpKurs);
 					rs.updateString("Nazwa_akcji", "JSW");
 					rs.updateDouble("Wartosc_wskaznika",0.0);

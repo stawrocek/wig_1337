@@ -26,16 +26,16 @@ public class MACD extends Agent{
 	public double alpha = 0.666666;
 	public double prev_MACD = -999999;
 	public double prev_signal = -999999;
-	public int numerOdczytu = 0;
+	public int numerOdczytu;
 	public int ostatniaDecyzja; //ostatnia
-
 	public MACD(){
 
 		System.out.println("Jestem agentem " + NAME +" (ID " + ID + ") ju¿ ¿yje");
-
+		numerOdczytu = 0;
 
 
 	}
+
 	public int go()
 	{
 		try
@@ -50,8 +50,7 @@ public class MACD extends Agent{
 				System.out.println("BLAD, dlugiTermin <= krotkiTermin");
 				return -999;
 			}
-			numerOdczytu++;
-			if(numerOdczytu < dlugiTermin)
+			if(numerOdczytu < dlugiTermin-1)
 				System.out.println("Zbieranie danych: " + numerOdczytu +"/"+dlugiTermin);
 
 			//String page;
@@ -71,14 +70,14 @@ public class MACD extends Agent{
 					System.out.println("po¹czono z baz¹");
 					Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_UPDATABLE);
-					stmt.execute("USE swspiz_11");
+					stmt.execute("USE " + SQLOperator.getSqlDatabase());
 					//WSKAZNIK MACD
 					ResultSet rs;
 					double MACD_value = -0.0;
 					double signal_line = -0.0;
 					//if (!(getTickCount() < dlugiTermin))
 					{
-						rs=stmt.executeQuery("select a.Notowanie from(select Notowanie from Gielda where id_agenta = 4 order by Id desc limit "+(dlugiTermin-1)+") as a");
+						rs=stmt.executeQuery("select a.Notowanie from(select Notowanie from "+ SQLOperator.getSqlTable() +" where id_agenta = 4 order by Id desc limit "+(dlugiTermin-1)+") as a");
 						double[] dane = new double[dlugiTermin+1];
 						int dane_size = 0;
 						for (int i = 1; i <= dlugiTermin-1 && rs.next(); i++)

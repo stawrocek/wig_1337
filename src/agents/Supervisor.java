@@ -21,6 +21,7 @@ public class Supervisor{
 	int decyzja=0;
 	public int numerOdczytu;
 	public static String NAME = "Supervisor";
+	public int ID = 100000;
 	public Supervisor(){
 
 		System.out.println("Jestem agentem " + NAME + " yeah");
@@ -30,10 +31,10 @@ public class Supervisor{
 	{
 		try
 		{
-			numerOdczytu++;
+			//numerOdczytu++;
 
-			System.out.println("tick="+numerOdczytu);
-			numerNotowania = numerOdczytu+7000;
+			//System.out.println("tick="+numerOdczytu);
+			numerNotowania = numerOdczytu;
 
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 
@@ -45,7 +46,7 @@ public class Supervisor{
 			stmt.execute("USE swspiz_11");
 			String query;
 
-			query = "select Decyzja, Notowanie, Data from Gielda WHERE Numer_Odczytu=" + numerNotowania;
+			query = "select Decyzja, Notowanie, Data from "+ SQLOperator.getSqlTable() +" WHERE Numer_Odczytu=" + numerNotowania;
 			ResultSet rs=stmt.executeQuery(query);
 
 			int ileMinus=0, ileZero=0, ilePlus=0;
@@ -86,14 +87,14 @@ public class Supervisor{
 
 			System.out.println("Decyzja: " + decyzja);
 
-
-			rs=stmt.executeQuery("SELECT * FROM Gielda");
+			data = new Timestamp(cal.getTimeInMillis());
+			rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTableSupervisor());
 			rs.moveToInsertRow();
-			rs.updateLong("Id_agenta", 100);
+			rs.updateLong("Id_agenta", ID);
 			rs.updateTimestamp("Data", data);
 			rs.updateLong("Numer_Odczytu", numerNotowania);
 			rs.updateDouble("Notowanie", notowanie);
-			rs.updateString("Nazwa_akcji", "JSW");
+			rs.updateString("Nazwa_akcji", "ltc_usd");
 			rs.updateDouble("Wartosc_wskaznika", 0.0);
 			rs.updateInt("Decyzja", decyzja);
 

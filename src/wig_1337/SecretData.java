@@ -8,13 +8,10 @@ import java.util.*;
 
 
 public class SecretData {
-	private String sqlLogin;
-	private String sqlPassword;
-	private String sqlUrl;
 	private Map<String,String> DATA;
 
 	public SecretData(){
-		
+		//System.out.println("SecretData constructor");
 		DATA = new HashMap<String, String>();
 		int lineCtr=0;
 		try  {
@@ -28,10 +25,6 @@ public class SecretData {
 		catch (IOException e){
 			System.out.println("Lol, IOException in SecretData.java");
 		}
-		
-		sqlLogin = DATA.get("sqlLogin");
-		sqlPassword = DATA.get("sqlPassword");
-		sqlUrl = DATA.get("sqlUrl");
 	}
 
 	private void addData(String str, int lineCtr){
@@ -40,7 +33,7 @@ public class SecretData {
 		String strValue="";
 		boolean foundEqual=false;
 		for(int i = 0; i < str.length(); i++){
-			if(str.charAt(i) == '='){
+			if(str.charAt(i) == '=' && foundEqual == false){
 				foundEqual=true;
 			}
 			else{
@@ -52,19 +45,31 @@ public class SecretData {
 				}
 			}
 		}
-		//System.out.println(strKey+"@"+strValue);
+		System.out.println(strKey+"@"+strValue);
 		DATA.put(strKey, strValue);
 	}
 
 	public String getDatabaseLogin(){
-		return sqlLogin;
+		return DATA.get("sqlLogin");
 	}
 
 	public String getDatabasePassword(){
-		return sqlPassword;
+		return DATA.get("sqlPassword");
 	}
 
 	public String getDatabaseUrl(){
-		return sqlUrl;
+		return DATA.get("sqlUrl");
+	}
+
+	public String getDatabaseDatabase(){
+		return DATA.get("sqlDatabase");
+	}
+
+	public String getDatabaseTableName() {
+		return DATA.get("sqlTable");
+	}
+
+	public String getDatabaseTableSupervisorName(){
+		return DATA.get("sqlTableSupervisor");
 	}
 }
