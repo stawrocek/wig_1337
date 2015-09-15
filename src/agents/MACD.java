@@ -17,22 +17,21 @@ import java.util.*;
 import java.sql.Timestamp;
 
 public class MACD extends Agent{
+	static public boolean isActive = true;
 	public String actKurs;
 	static public String NAME = "MACD";
-	public int ID = 4;
 	public int dlugiTermin = 26;
 	public int krotkiTermin = 12;
 	public int srednia = 9;
 	public double alpha = 0.666666;
 	public double prev_MACD = -999999;
 	public double prev_signal = -999999;
-	public int numerOdczytu;
 	public int ostatniaDecyzja; //ostatnia
 	public MACD(){
 
 		System.out.println("Jestem agentem " + NAME +" (ID " + ID + ") ju¿ ¿yje");
 		numerOdczytu = 0;
-
+		ID = 4000000;
 
 	}
 
@@ -56,7 +55,7 @@ public class MACD extends Agent{
 			//String page;
 
 			Document doc = Jsoup.parse
-			(w.getData("http://www.bankier.pl/inwestowanie/profile/quote.html?symbol=JSW"));
+			(w.getData(dataSource));
 			Elements kurs = doc.select("div");
 			for(Element src : kurs) {
 				if (src.attr("class").equals("profilLast"))
@@ -77,7 +76,7 @@ public class MACD extends Agent{
 					double signal_line = -0.0;
 					//if (!(getTickCount() < dlugiTermin))
 					{
-						rs=stmt.executeQuery("select a.Notowanie from(select Notowanie from "+ SQLOperator.getSqlTable() +" where id_agenta = 4 order by Id desc limit "+(dlugiTermin-1)+") as a");
+						rs=stmt.executeQuery("select a.Notowanie from(select Notowanie from "+ SQLOperator.getSqlTable() +" where id_agenta = "+ ID +" order by Id desc limit "+(dlugiTermin-1)+") as a");
 						double[] dane = new double[dlugiTermin+1];
 						int dane_size = 0;
 						for (int i = 1; i <= dlugiTermin-1 && rs.next(); i++)
@@ -101,7 +100,7 @@ public class MACD extends Agent{
 						// MACD
 						MACD_value = (S_krotkie-S_dlugie)*100;
 						rs.close(); //close
-						String query1="select a.Wartosc_wskaznika from(select Wartosc_wskaznika from Gielda where id_agenta = 4 order by Id desc limit "+(srednia-1)+") as a";
+						String query1="select a.Wartosc_wskaznika from(select Wartosc_wskaznika from "+ SQLOperator.getSqlTable() +" where id_agenta = "+ ID +" order by Id desc limit "+(srednia-1)+") as a";
 						rs=stmt.executeQuery(query1);
 						dane = new double[srednia+1];
 						dane_size = 0;
@@ -122,7 +121,7 @@ public class MACD extends Agent{
 						rs.close();
 
 					}
-					rs=stmt.executeQuery("SELECT * FROM Gielda");
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
 					actKurs=actKurs.replace(",", ".");
 					actKurs=actKurs.replace(" z³", "");
 					actKurs=actKurs.replace(" ", "");
@@ -153,7 +152,7 @@ public class MACD extends Agent{
 					rs.updateTimestamp("Data",data);
 					rs.updateLong("Numer_Odczytu", numerOdczytu);
 					rs.updateDouble("Notowanie", tmpKurs);
-					rs.updateString("Nazwa_akcji", "JSW");
+					rs.updateString("Nazwa_akcji", getSourceName());
 					rs.updateDouble("Wartosc_wskaznika", MACD_value);
 					rs.updateInt("Decyzja", decyzja);
 					String nazwa_akcji=rs.getString("Nazwa_akcji");

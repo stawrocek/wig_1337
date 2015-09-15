@@ -19,18 +19,17 @@ import org.jsoup.select.Elements;
 
 
 public class ROC extends Agent{
+	static public boolean isActive = true;
 	public String actKurs;
 	public Double prevRoc=0.0;
 	static public String NAME = "ROC";
-	public int ID = 5;
-	public int numerOdczytu;
 	public int ostDecyzja;
 
 	public ROC(){
 
 		System.out.println("Jestem agentem " + NAME +" (ID " + ID + "), juø øyje");
 		numerOdczytu = 0;
-
+		ID = 5000000;
 	}
 	public int go()
 	{
@@ -43,7 +42,7 @@ public class ROC extends Agent{
 			//String page;
 
 			Document doc = Jsoup.parse
-			(w.getData("http://www.bankier.pl/inwestowanie/profile/quote.html?symbol=JSW"));
+			(w.getData(dataSource));
 			Elements kurs = doc.select("div");
 			for(Element src : kurs) {
 				if (src.attr("class").equals("profilLast"))
@@ -59,7 +58,7 @@ public class ROC extends Agent{
 					stmt.execute("USE swspiz_11");
 
 					//OBLICZANIE WSKAèNIKA WILLIAMSA
-					ResultSet rs=stmt.executeQuery("select a.Notowanie from (select Notowanie from Gielda where id_agenta = 5 order by Id desc limit 10) as a");
+					ResultSet rs=stmt.executeQuery("select a.Notowanie from (select Notowanie from "+ SQLOperator.getSqlTable() +" where id_agenta = "+ ID +" order by Id desc limit 10) as a");
 					Double nminusk=0.0;
 					while(rs.next()){
 						nminusk = rs.getDouble("Notowanie");
@@ -96,7 +95,7 @@ public class ROC extends Agent{
 					}
 
 					prevRoc=ROC;
-					rs=stmt.executeQuery("SELECT * FROM Gielda");
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
 
 
 
@@ -112,7 +111,7 @@ public class ROC extends Agent{
 					rs.updateTimestamp("Data", data);
 					rs.updateLong("Numer_Odczytu",numerOdczytu);
 					rs.updateDouble("Notowanie", tmpKurs);
-					rs.updateString("Nazwa_akcji", "JSW");
+					rs.updateString("Nazwa_akcji", getSourceName());
 					rs.updateDouble("Wartosc_wskaznika",0.0);
 					rs.updateInt("Decyzja",decyzja);
 					//rs.updateString("Kurs", actKurs);

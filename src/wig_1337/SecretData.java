@@ -8,12 +8,17 @@ import java.util.*;
 
 
 public class SecretData {
-	private Map<String,String> DATA;
+	private Map<String,String> DATA; // SQL stuff
+	private Vector<String> URLS; // List of URLS to use
+	private int urlCounter = 0;
 
 	public SecretData(){
 		//System.out.println("SecretData constructor");
+		urlCounter = 0;
 		DATA = new HashMap<String, String>();
+		URLS = new Vector<String>();
 		int lineCtr=0;
+		System.out.println("----HIDDEN DATA----");
 		try  {
 			BufferedReader br = new BufferedReader(new FileReader("assets/hiddenData.wig1337"));
 			String line;
@@ -21,6 +26,24 @@ public class SecretData {
 				addData(line, lineCtr);
 				lineCtr++;
 			}
+			br.close();
+			System.out.println("----HIDDEN DATA END----");
+		}
+		catch (IOException e){
+			System.out.println("Lol, IOException in SecretData.java");
+		}
+
+		try  {
+			BufferedReader br = new BufferedReader(new FileReader("assets/URLS.wig1337"));
+			String line;
+			System.out.println("----URLS----");
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+				URLS.addElement(line);
+				lineCtr++;
+			}
+			System.out.println("----URLS END----");
+			br.close();
 		}
 		catch (IOException e){
 			System.out.println("Lol, IOException in SecretData.java");
@@ -71,5 +94,17 @@ public class SecretData {
 
 	public String getDatabaseTableSupervisorName(){
 		return DATA.get("sqlTableSupervisor");
+	}
+
+	public String nextURL() {
+		if (urlCounter >= URLS.size()) {
+			return new String("");
+		}
+		urlCounter++;
+		return (String) URLS.elementAt(urlCounter-1);
+	}
+
+	public int getUrlSourceSize() {
+		return URLS.size();
 	}
 }

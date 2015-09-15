@@ -20,10 +20,9 @@ import org.jsoup.select.Elements;
 
 
 public class Williams extends Agent{
+	static public boolean isActive = true;
 	public String actKurs;
 	static public String NAME = "Williams";
-	public int ID = 1;
-	public int numerOdczytu;
 	public int ostDecyzja;
 	public String nazwaAkcji;
 
@@ -31,6 +30,7 @@ public class Williams extends Agent{
 	{
 		System.out.println("Jestem agentem " + NAME +" (ID " + ID + "), juø øyje");
 		numerOdczytu = 0;
+		ID = 1000000;
 	}
 	public int go()
 	{
@@ -43,7 +43,7 @@ public class Williams extends Agent{
 		//String page;
 
 		Document doc = Jsoup.parse
-		(w.getData("http://www.bankier.pl/inwestowanie/profile/quote.html?symbol=JSW"));
+		(w.getData(dataSource));
 		Elements kurs = doc.select("div");
 			for(Element src : kurs) {
 				if (src.attr("class").equals("profilLast"))
@@ -59,7 +59,7 @@ public class Williams extends Agent{
 					stmt.execute("USE swspiz_11");
 
 					//OBLICZANIE WSKAèNIKA WILLIAMSA
-					ResultSet rs=stmt.executeQuery("select max(a.Notowanie), min(a.Notowanie) from (select Notowanie from Gielda where id_agenta = 1 order by Id desc limit 10) as a");
+					ResultSet rs=stmt.executeQuery("select max(a.Notowanie), min(a.Notowanie) from (select Notowanie from "+ SQLOperator.getSqlTable() +" where id_agenta = "+ ID +" order by Id desc limit 10) as a");
 					double Williams=0.0,tmpKurs=0.0;
 					int decyzja=0;
 					if(rs.next())
@@ -97,7 +97,7 @@ public class Williams extends Agent{
 						}
 
 
-					rs=stmt.executeQuery("SELECT * FROM Gielda");
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
 
 					}
 
@@ -113,7 +113,7 @@ public class Williams extends Agent{
 					rs.updateTimestamp("Data", data);
 					rs.updateLong("Numer_Odczytu",numerOdczytu);
 					rs.updateDouble("Notowanie", tmpKurs);
-					rs.updateString("Nazwa_akcji", "JSW");
+					rs.updateString("Nazwa_akcji", getSourceName());
 					rs.updateDouble("Wartosc_wskaznika",Williams);
 					rs.updateInt("Decyzja",decyzja);
 					//rs.updateString("Kurs", actKurs);

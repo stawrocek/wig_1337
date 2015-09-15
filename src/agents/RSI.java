@@ -25,8 +25,9 @@ import java.sql.Timestamp;
 
 public class RSI extends Agent
 {
+	static public boolean isActive = false;
 	static public String NAME = "RSI";
-	public int ID = 6;
+	public int ID = 6000000;
 	public String actKurs;
 	public String staryKurs;
 	public String akcja="LOTOS";
@@ -44,7 +45,7 @@ public class RSI extends Agent
 				try{
 					Webpage w = new Webpage();
 					System.out.println("teraz odczytujê zawartoœæ strony co 60 sekund" + "tick="+getTickCount());
-					Document doc = Jsoup.parse(w.getData("http://www.bankier.pl/inwestowanie/profile/quote.html?symbol=JSW"));
+					Document doc = Jsoup.parse(w.getData(dataSource));
 					Elements kurs = doc.select("div");
 					for (Element src: kurs)
 					{
@@ -106,7 +107,7 @@ public class RSI extends Agent
 					rs.updateTimestamp("Data", data);
 					rs.updateLong("Numer_Odczytu", (getTickCount()+8000));
 					rs.updateDouble("Notowanie", tmpKurs);
-					rs.updateString("Nazwa_Akcji", "JSW");
+					rs.updateString("Nazwa_Akcji", getSourceName());
 					rs.updateDouble("Wartosc_wskaznika", RSI);
 					rs.updateInt("Decyzja", dec);
 					rs.insertRow();
