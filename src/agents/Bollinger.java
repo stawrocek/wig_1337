@@ -67,9 +67,9 @@ public class Bollinger extends Agent{ // AGENT 3
 
 
 
-						for(int i = 0; i < 20 && i < rs.getFetchSize(); i++){
+						for(int i = 0; i < 20; i++){
 							double tmp = rs.getDouble("Notowanie");
-							System.out.println("i: " + i + " ---> " + tmp);
+							//System.out.println("i: " + i + " ---> " + tmp);
 							tab[i]=tmp;
 							suma += tmp;
 							rs.next();

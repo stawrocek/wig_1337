@@ -4,11 +4,30 @@ import agents.*;
 import datasources.*;
 import java.io.*;
 import javax.xml.datatype.Duration;
-import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 
 public class Main {
 	static private int activeAgents; // excluding supervisor, counted when initializing agents using isActive method
+	static private SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+	static String sStart = "09:00:00";
+	static String sEnd   = "17:05:00";
+	static long lDelay = 600000;
+	static Calendar calStart;
+	static Calendar calEnd;
+
+	static private Calendar parseDate(SimpleDateFormat F, String date)
+	{
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTimeInMillis(0);
+		try {
+		    cal1.setTime(F.parse(date));
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		return cal1;
+	}
 
 	public static void main(String args[]){
 	try {
@@ -84,7 +103,20 @@ public class Main {
 		}
 		System.out.flush();
 
-		// BEGIN DORITO SUPREME PROGRAM LOOP
+		calStart = parseDate(format,sStart);
+		calEnd   = parseDate(format,sEnd);
+		Calendar timeNow = Calendar.getInstance();
+		/*  only if testing multiple times per day */
+			calStart.set(timeNow.get(Calendar.YEAR), timeNow.get(Calendar.MONTH), timeNow.get(Calendar.DAY_OF_MONTH));
+			calEnd.set(timeNow.get(Calendar.YEAR), timeNow.get(Calendar.MONTH), timeNow.get(Calendar.DAY_OF_MONTH));
+		/*-----------------------------------------*/
+		while (timeNow.before(calStart)) {
+			Thread.sleep(1000);
+			System.out.println(timeNow.before(calStart));
+			System.out.println(timeNow.toString() + "\t" + calStart.toString());
+			timeNow = Calendar.getInstance();
+		}
+
 		File f = new File("assets/numerOdczytu.wig1337");
 		int odczyt = 0;
 		if (f.isFile()) {
@@ -94,10 +126,15 @@ public class Main {
 				odczyt = Integer.parseInt(line);
 		}
 		boolean terminateMe = false; // PLS IMPLEMENT SMTH
-		Date t1, t2;
-		Duration t;
-		for (int loop = odczyt; terminateMe == false; loop++) {
-			t1 = new Date();
+		Calendar t1, t2;
+		long diffTime = 0;
+		// BEGIN DORITO SUPREME PROGRAM LOOP
+		for (int loop = odczyt+1; terminateMe == false; loop++) {
+			t1 = Calendar.getInstance();
+			/*if (t1.after(calEnd)) {
+				while (t1.after(calEnd))
+					t1 = Calendar.getInstance();
+			} */
 			for (int i = 0; i < sec.getUrlSourceSize()*activeAgents; i++){
 				container[i].numerOdczytu = loop;
 				container[i].go();
@@ -109,8 +146,10 @@ public class Main {
 			PrintWriter writer = new PrintWriter("assets/numerOdczytu.wig1337", "UTF-8");
 			writer.println(loop);
 			writer.close();
-			t2 = new Date();
-			Thread.sleep(270000);
+			t2 = Calendar.getInstance();
+			diffTime = t2.getTimeInMillis() - t1.getTimeInMillis();
+			if (diffTime < lDelay)
+				Thread.sleep(lDelay-diffTime);
 
 		}
 
