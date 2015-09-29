@@ -111,7 +111,7 @@ public class Main {
 			calEnd.set(timeNow.get(Calendar.YEAR), timeNow.get(Calendar.MONTH), timeNow.get(Calendar.DAY_OF_MONTH));
 		/*-----------------------------------------*/
 		while (timeNow.before(calStart)) {
-			Thread.sleep(1000);
+			Thread.sleep(10000);
 			System.out.println(timeNow.before(calStart));
 			System.out.println(timeNow.toString() + "\t" + calStart.toString());
 			timeNow = Calendar.getInstance();

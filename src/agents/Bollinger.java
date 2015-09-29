@@ -67,12 +67,11 @@ public class Bollinger extends Agent{ // AGENT 3
 
 
 
-						for(int i = 0; i < 20; i++){
+						for(int i = 0; rs.next(); i++){
 							double tmp = rs.getDouble("Notowanie");
 							//System.out.println("i: " + i + " ---> " + tmp);
 							tab[i]=tmp;
 							suma += tmp;
-							rs.next();
 						}
 
 						srednia = suma/20.0;
