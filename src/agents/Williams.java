@@ -28,7 +28,7 @@ public class Williams extends Agent{
 
 	public Williams()
 	{
-		System.out.println("Jestem agentem " + NAME +" (ID " + ID + "), ju¿ ¿yje");
+		//System.out.println("Jestem agentem " + NAME +" (ID " + ID + "), ju¿ ¿yje");
 		numerOdczytu = 0;
 		ID = 1000000;
 	}

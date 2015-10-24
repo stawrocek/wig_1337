@@ -25,12 +25,12 @@ public class Supervisor {
 	private String dataSource = "";
 	public Supervisor(){
 
-		System.out.println("Jestem agentem " + NAME + " yeah");
+		//System.out.println("Jestem agentem " + NAME + " yeah");
 		numerOdczytu = 0;
 	}
 	public Supervisor(int _ID){
 
-		System.out.println("Jestem agentem " + NAME + " yeah");
+		//System.out.println("Jestem agentem " + NAME + " yeah");
 		numerOdczytu = 0;
 		ID+=_ID;
 	}

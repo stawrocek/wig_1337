@@ -103,6 +103,14 @@ public class SecretData {
 		urlCounter++;
 		return (String) URLS.elementAt(urlCounter-1);
 	}
+	
+	public Vector<String> getAllURL() {
+		return URLS;
+	}
+
+	public void resetURLCounter() {
+		urlCounter = 0;
+	}
 
 	public int getUrlSourceSize() {
 		return URLS.size();

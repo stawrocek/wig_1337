@@ -22,7 +22,7 @@ public class Bollinger extends Agent{ // AGENT 3
 	public int ostDecyzja;
 	public Bollinger(){
 
-		System.out.println("Jestem agentem " + NAME +" (ID " + ID + ") yeah");
+		//System.out.println("Jestem agentem " + NAME +" (ID " + ID + ") yeah");
 		numerOdczytu = 0;
 		ID = 3000000;
 		}

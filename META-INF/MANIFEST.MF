@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Sealed: true
+Main-Class: wig_1337.Main
+Class-path: external_libs/jsoup-1.8.2.jar external_libs/mysql-connector-java-5.1.35-bin.jar
+

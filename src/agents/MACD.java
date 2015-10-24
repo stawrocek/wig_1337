@@ -29,7 +29,7 @@ public class MACD extends Agent{
 	public int ostatniaDecyzja; //ostatnia
 	public MACD(){
 
-		System.out.println("Jestem agentem " + NAME +" (ID " + ID + ") ju¿ ¿yje");
+		//System.out.println("Jestem agentem " + NAME +" (ID " + ID + ") ju¿ ¿yje");
 		numerOdczytu = 0;
 		ID = 4000000;
 

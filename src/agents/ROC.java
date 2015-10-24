@@ -27,7 +27,7 @@ public class ROC extends Agent{
 
 	public ROC(){
 
-		System.out.println("Jestem agentem " + NAME +" (ID " + ID + "), ju¿ ¿yje");
+		//System.out.println("Jestem agentem " + NAME +" (ID " + ID + "), ju¿ ¿yje");
 		numerOdczytu = 0;
 		ID = 5000000;
 	}

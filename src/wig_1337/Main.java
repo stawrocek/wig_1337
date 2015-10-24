@@ -3,7 +3,6 @@ package wig_1337;
 import agents.*;
 import datasources.*;
 import java.io.*;
-import javax.xml.datatype.Duration;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
@@ -11,9 +10,9 @@ import java.text.SimpleDateFormat;
 public class Main {
 	static private int activeAgents; // excluding supervisor, counted when initializing agents using isActive method
 	static private SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-	static String sStart = "09:00:00";
-	static String sEnd   = "17:05:00";
-	static long lDelay = 600000;
+	static String sStart = "07:00:00"; // UTC
+	static String sEnd   = "15:00:00"; // UTC
+	static long lDelay = 1200000;
 	static Calendar calStart;
 	static Calendar calEnd;
 
@@ -27,6 +26,33 @@ public class Main {
 		    e.printStackTrace();
 		}
 		return cal1;
+	}
+
+	static private String showDateTime(Calendar c) {
+		String s = "";
+		s+=c.get(Calendar.YEAR);
+		s+=".";
+		if (c.get(Calendar.MONTH)<10)
+			s+="0";
+		s+=c.get(Calendar.MONTH);
+		s+=".";
+		if (c.get(Calendar.DAY_OF_MONTH)<10)
+			s+="0";
+		s+=c.get(Calendar.DAY_OF_MONTH);
+		s+=" ";
+		if(c.get(Calendar.HOUR_OF_DAY) < 10) s+="0";
+		s+=c.get(Calendar.HOUR_OF_DAY);
+		s+=":";
+		if(c.get(Calendar.MINUTE) < 10) s+="0";
+		s+=c.get(Calendar.MINUTE);
+		s+=":";
+		if(c.get(Calendar.SECOND) < 10) s+="0";
+		s+=c.get(Calendar.SECOND);
+		s+=".";
+		if(c.get(Calendar.MILLISECOND) < 100) s+="0";
+		if(c.get(Calendar.MILLISECOND) < 10) s+="0";
+		s+=c.get(Calendar.MILLISECOND);
+		return s;
 	}
 
 	public static void main(String args[]){
@@ -101,6 +127,7 @@ public class Main {
 			}
 			uniqueID++;
 		}
+		System.out.println("Successfully created all agents");
 		System.out.flush();
 
 		calStart = parseDate(format,sStart);
@@ -110,12 +137,11 @@ public class Main {
 			calStart.set(timeNow.get(Calendar.YEAR), timeNow.get(Calendar.MONTH), timeNow.get(Calendar.DAY_OF_MONTH));
 			calEnd.set(timeNow.get(Calendar.YEAR), timeNow.get(Calendar.MONTH), timeNow.get(Calendar.DAY_OF_MONTH));
 		/*-----------------------------------------*/
-		while (timeNow.before(calStart)) {
-			Thread.sleep(10000);
-			System.out.println(timeNow.before(calStart));
-			System.out.println(timeNow.toString() + "\t" + calStart.toString());
-			timeNow = Calendar.getInstance();
-		}
+		System.out.println("Current time: " + showDateTime(timeNow));
+		System.out.println("Start: " + showDateTime(calStart));
+		System.out.println("Est. end: " + showDateTime(calEnd));
+		if (timeNow.before(calStart))
+			Thread.sleep(calStart.getTimeInMillis() - timeNow.getTimeInMillis());
 
 		File f = new File("assets/numerOdczytu.wig1337");
 		int odczyt = 0;
@@ -125,7 +151,7 @@ public class Main {
 			if (line != null)
 				odczyt = Integer.parseInt(line);
 		}
-		boolean terminateMe = false; // PLS IMPLEMENT SMTH
+		boolean terminateMe = false;
 		Calendar t1, t2;
 		long diffTime = 0;
 		// BEGIN DORITO SUPREME PROGRAM LOOP
@@ -135,7 +161,14 @@ public class Main {
 				while (t1.after(calEnd))
 					t1 = Calendar.getInstance();
 			} */
-			for (int i = 0; i < sec.getUrlSourceSize()*activeAgents; i++){
+			timeNow = Calendar.getInstance();
+			if (timeNow.after(calEnd)) {
+				System.out.print("LOOP end@");
+				System.out.println(showDateTime(timeNow));
+				System.out.println("loop == " + loop + " (-1)");
+				terminateMe = true;
+			}
+			for (int i = 0; i < sec.getUrlSourceSize()*activeAgents && !terminateMe; i++){
 				container[i].numerOdczytu = loop;
 				container[i].go();
 				if (loop >= 0 && (i+1) % activeAgents == 0) {
@@ -143,12 +176,14 @@ public class Main {
 					supervisors[(i/activeAgents)].go();
 				}
 			}
-			PrintWriter writer = new PrintWriter("assets/numerOdczytu.wig1337", "UTF-8");
-			writer.println(loop);
-			writer.close();
+			if (!terminateMe) {
+				PrintWriter writer = new PrintWriter("assets/numerOdczytu.wig1337", "UTF-8");
+				writer.println(loop);
+				writer.close();
+			}
 			t2 = Calendar.getInstance();
 			diffTime = t2.getTimeInMillis() - t1.getTimeInMillis();
-			if (diffTime < lDelay)
+			if (diffTime < lDelay && !terminateMe)
 				Thread.sleep(lDelay-diffTime);
 
 		}
