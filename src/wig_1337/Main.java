@@ -10,9 +10,9 @@ import java.text.SimpleDateFormat;
 public class Main {
 	static private int activeAgents; // excluding supervisor, counted when initializing agents using isActive method
 	static private SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-	static String sStart = "07:00:00"; // UTC
-	static String sEnd   = "15:00:00"; // UTC
-	static long lDelay = 1200000;
+	static String sStart = "08:00:00"; // UTC
+	static String sEnd   = "16:00:00"; // UTC
+	static long lDelay = 1200000-1;
 	static Calendar calStart;
 	static Calendar calEnd;
 
@@ -23,6 +23,7 @@ public class Main {
 		try {
 		    cal1.setTime(F.parse(date));
 		} catch (Exception e) {
+			System.out.println("Critical error in ManagerThread.parseDate()");
 		    e.printStackTrace();
 		}
 		return cal1;
@@ -75,6 +76,7 @@ public class Main {
 		//hpee.testIt();
 
 		// INIT ALL AGENTS
+
 		activeAgents = 0;
 		if (Bollinger.isActive == true) 	activeAgents++;
 		if (MACD.isActive == true) 			activeAgents++;

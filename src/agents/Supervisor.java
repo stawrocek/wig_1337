@@ -118,7 +118,7 @@ public class Supervisor {
 
 			if (decyzja != 0) {
 				data = new Timestamp(cal.getTimeInMillis());
-				rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTableSupervisor());
+				rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTableSupervisor() + " WHERE 1=2");
 				rs.moveToInsertRow();
 				rs.updateLong("Id_agenta", ID);
 				rs.updateTimestamp("Data", data);

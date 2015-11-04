@@ -98,7 +98,7 @@ public class RSI extends Agent
 					actKurs = actKurs.replace(",", ".");
 					actKurs = actKurs.replace(" z³", "");
 					Double tmpKurs=Double.parseDouble(actKurs);
-					rs=stmt.executeQuery("SELECT * FROM Gielda");
+					rs=stmt.executeQuery("SELECT * FROM Gielda" + " WHERE 1=2");
 					Calendar cal = Calendar.getInstance();
 					Timestamp data;
 					data = new Timestamp(cal.getTimeInMillis());

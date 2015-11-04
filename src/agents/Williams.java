@@ -97,7 +97,7 @@ public class Williams extends Agent{
 						}
 
 
-					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable() + " WHERE 1=2");
 
 					}
 

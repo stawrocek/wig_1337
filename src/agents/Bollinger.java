@@ -102,7 +102,7 @@ public class Bollinger extends Agent{ // AGENT 3
 
 					Calendar cal = Calendar.getInstance();
 					Timestamp data = new Timestamp(cal.getTimeInMillis());
-					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable() + " WHERE 1=2");
 					rs.moveToInsertRow();
 					rs.updateLong("Id_agenta", ID);
 					rs.updateTimestamp("Data", data);

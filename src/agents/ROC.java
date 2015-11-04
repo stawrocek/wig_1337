@@ -95,7 +95,7 @@ public class ROC extends Agent{
 					}
 
 					prevRoc=ROC;
-					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable() + " WHERE 1=2");
 
 
 

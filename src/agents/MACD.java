@@ -121,7 +121,7 @@ public class MACD extends Agent{
 						rs.close();
 
 					}
-					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable() + " WHERE 1=2");
 					actKurs=actKurs.replace(",", ".");
 					actKurs=actKurs.replace(" z³", "");
 					actKurs=actKurs.replace(" ", "");

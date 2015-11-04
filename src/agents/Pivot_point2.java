@@ -104,7 +104,7 @@ public class Pivot_point2 extends Agent{
 					}
 					if(numerOdczytu+dzien<60)
 						dec=0;
-					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable());
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable() + " WHERE 1=2");
 					Calendar cal = Calendar.getInstance();
 					Timestamp data;
 					data = new Timestamp(cal.getTimeInMillis());
