@@ -60,12 +60,8 @@ public class Bollinger extends Agent{ // AGENT 3
 					rs=stmt.executeQuery("select a.Notowanie from (select Notowanie from "+ SQLOperator.getSqlTable() +" where Id_agenta = "+ ID +" order by Id desc limit 20) as a");
 					double[] tab = new double[20];
 					double srednia=0.0, maxi=0.0, mini=0.0;
-					if(rs.next())
-					{
 
 						double suma = 0;
-
-
 
 						for(int i = 0; rs.next(); i++){
 							double tmp = rs.getDouble("Notowanie");
@@ -94,7 +90,6 @@ public class Bollinger extends Agent{ // AGENT 3
 
 						//if(1==1)
 						//return;
-					}
 					actKurs = actKurs.replace(",", ".");
 					actKurs = actKurs.replace(" z³", "");
 
