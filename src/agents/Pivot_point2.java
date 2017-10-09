@@ -15,26 +15,26 @@ import java.util.Calendar;
 import java.sql.Timestamp;
 
 public class Pivot_point2 extends Agent{
+	static public boolean isActive = false;
 	public int dzien=7000;
 	public String actKurs;
 	public String staryKurs;
 	public String akcja="JSW";
-	public int dec=0, acttick, kurzamk, ID=2, x;
+	public int dec=0, acttick, kurzamk, x;
 	public double wart=0.0, stkurs, RS[]=new double[8];
 	static public String NAME = "Pivot_point2";
-	public int numerOdczytu;
 	public int ostDecyzja;
 	public Pivot_point2(){
 		System.out.println("Hello World " + NAME +" (ID " + ID + "): OK");
-		numerOdczytu = 1;
+		numerOdczytu = 0;
+		ID=2000000;
 		}
 	public int go()
 	{
 		try{
-			numerOdczytu++;
 			Webpage w = new Webpage();
 			System.out.println("p: co 60s odczyt "+"tick="+numerOdczytu);
-			Document doc = Jsoup.parse(w.getData("http://www.bankier.pl/inwestowanie/profile/quote.html?symbol=JSW"));
+			Document doc = Jsoup.parse(w.getData(dataSource));
 			Elements kurs=doc.select("div");
 			for(Element src : kurs){
 				if(src.attr("class").equals("profilLast")){
@@ -104,7 +104,7 @@ public class Pivot_point2 extends Agent{
 					}
 					if(numerOdczytu+dzien<60)
 						dec=0;
-					rs=stmt.executeQuery("SELECT * FROM Gielda");
+					rs=stmt.executeQuery("SELECT * FROM " + SQLOperator.getSqlTable() + " WHERE 1=2");
 					Calendar cal = Calendar.getInstance();
 					Timestamp data;
 					data = new Timestamp(cal.getTimeInMillis());
@@ -113,7 +113,7 @@ public class Pivot_point2 extends Agent{
 					rs.updateTimestamp("Data", data);
 					rs.updateLong("Numer_Odczytu", (numerOdczytu+dzien));
 					rs.updateDouble("Notowanie", tmpKurs);
-					rs.updateString("Nazwa_Akcji", akcja);
+					rs.updateString("Nazwa_Akcji", getSourceName());
 					rs.updateDouble("Wartosc_wskaznika", wart);
 					rs.updateInt("Decyzja", dec);
 					rs.insertRow();
