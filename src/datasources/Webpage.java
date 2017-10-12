@@ -13,18 +13,11 @@ public class Webpage {
 	static boolean active;
 	String strona;
 	public Webpage() throws Exception{
-			cache = "";
-			cacheURL = "";
-			active = false;
 	}
 	public String getPage(String url) throws Exception{
 		return this.getData(url);
 	}
 	public String getData(String address) throws Exception {
-		if (address.equals(cacheURL)) {
-			while (active) {}
-			return cache;
-		}
 		URL page = new URL (address);
 		HttpURLConnection conn = (HttpURLConnection) page.openConnection();
 		conn.connect();
@@ -37,11 +30,6 @@ public class Webpage {
 			line = buff.readLine();
 		}
 		strona = line1.toString();
-		while (active) {}
-		active = true;
-		cache = strona;
-		cacheURL = address;
-		active = false;
 
 		return strona;
 

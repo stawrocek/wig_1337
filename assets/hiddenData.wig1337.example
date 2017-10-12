@@ -1,0 +1,6 @@
+sqlLogin=LOGIN
+sqlPassword=PASSWORD
+sqlUrl=jdbc:mysql://127.0.0.1:3307
+sqlDatabase=DB_NAME
+sqlTable=TABLE_NAME
+sqlTableSupervisor=supervisor
